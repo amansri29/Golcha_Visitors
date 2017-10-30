@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:background="#FFFFFF"
+    >
+
+
+    <TextView
+        android:padding="5dp"
+        android:layout_alignParentLeft="true"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/title_titleBar"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="@color/colorText"
+        android:text="Visitors"/>
+
+
+
+    <ImageView
+        android:id="@+id/logout"
+        android:src="@drawable/logout"
+        android:padding="4dp"
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:gravity="center"
+        android:layout_alignParentRight="true"/>
+
+</RelativeLayout>
+

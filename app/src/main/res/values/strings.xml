@@ -1,0 +1,74 @@
+<resources>
+    <string name="app_name">Visitors</string>
+
+
+    <string-array name="purposes">
+        <item>Official</item>
+        <item>Personal</item>
+    </string-array>
+
+
+    <string-array name="whomToVisit">
+        <item>AMITAV NARESH</item>
+        <item>MOTI LAL SHARMA</item>
+        <item>A.B.DANGAYACH</item>
+        <item>MUKESH KAPOOR</item>
+        <item>MURLI MANOHAR</item>
+        <item>PARIKSHIT SINGH</item>
+        <item>BAL MUKUND SHARMA</item>
+        <item>PAWAN KUMAR JOSH</item>
+        <item>UMANG JAIN</item>
+        <item>TAUKEER ALI JOD</item>
+        <item>CHARU KASHYAP</item>
+        <item>RICHA AGARWAL</item>
+        <item>NAVEEN MATHUR</item>
+        <item>RAKESH THOLIA</item>
+        <item>DEEPAK GANGWAL</item>
+        <item>RITU JOSHI</item>
+        <item>DEEPAK GANGWAL</item>
+        <item>RITU JOSHI</item>
+        <item>RAJESH KUMAR SHARMA</item>
+        <item>PARMOD PATIL</item>
+        <item>DHEERAJ KUMAR</item>
+        <item>HITESH SHARMA</item>
+        <item>GEETA AGARWAL</item>
+        <item>DILIP TRIVEDI</item>
+        <item>AMRISH SHARMA</item>
+        <item>JAI SONI</item>
+        <item>AVIK DHANG</item>
+        <item>SURENDRA SINGH</item>
+        <item>DEEPAK SINGH JADAV</item>
+        <item>SISIR TRIPATHY</item>
+        <item>ASHOK SHARMA</item>
+        <item>M.FERNANDIS</item>
+        <item>SHASHI KANT SHARMA</item>
+        <item>VIVEK GUPTA</item>
+        <item>SANJAY BANSEL</item>
+        <item>VINOD JAIN</item>
+        <item>C.S.SHRIMALI</item>
+        <item>SONALI SHARMA</item>
+        <item>PUNEET GOYA</item>
+        <item>VIRENDRA SAHU</item>
+        <item>VIKAS KUMAR</item>
+        <item>MURLI MANOHAR PAREEK</item>
+        <item>GOPAL SINGH</item>
+        <item>MEGHA AGARWAL</item>
+        <item>MANOJ PAREEK</item>
+        <item>YOGESH SHARMA</item>
+        <item>RADHEY SHYAM SHARMA</item>
+        <item>B.P.MODI</item>
+        <item>KETAN GOSWAMI</item>
+        <item>PRADEEP SINGH</item>
+        <item>RAJ KUMAR BHAWANA</item>
+        <item>SATYENDRA SHARMA</item>
+        <item>KAVITA JAIN</item>
+        <item>AZHARUDDIN</item>
+        <item>HAJARI</item>
+        <item>O.P.PANDAY</item>
+        <item>O.P.PANDAY</item>
+        <item>AMAN SRIVASTAV</item>
+        <item>ABHIMANYU GOLCHA</item>
+    </string-array>
+
+    <string name="purpose_title">Purpose of Visit</string>
+</resources>
