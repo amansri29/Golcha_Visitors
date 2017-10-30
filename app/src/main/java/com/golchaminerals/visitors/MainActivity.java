@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     Button submit;
     private static final int CAMERA_REQUEST = 1888;
     private String TAG = MainActivity.class.getSimpleName();
-    private String timeOfVisit;
+    private String timeOfVisit, dateOfVisit;
     String firstNameS, lastNameS, mobileNumberS, whomToVisitS, inTimeS, remarksS, visitPurposeS, profileImageS;
     ProgressDialog progressDialog;
     Bitmap photoBitMap;
@@ -184,12 +184,16 @@ public class MainActivity extends AppCompatActivity {
                                       int before, int count) {
 
                 Calendar cal = Calendar.getInstance();
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
                 timeOfVisit = df.format(cal.getTime());
+                SimpleDateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
+                dateOfVisit = df2.format(cal.getTime());
+                SimpleDateFormat df3 = new SimpleDateFormat("HH:mm:ss yyyy-MM-dd");
+
                 if (whomToVisit.getText() != null)
 
                     if (s.length() != 0)
-                        inTime.setText(timeOfVisit);
+                        inTime.setText(df3.format(cal.getTime()));
                     else
                         inTime.setText("In Time");
             }
@@ -292,7 +296,7 @@ public class MainActivity extends AppCompatActivity {
                 connection = DriverManager.getConnection("jdbc:jtds:sqlserver://182.19.11.77:1433/VisitorsList;user=" + userName + ";password=" + passWord2);
                 Log.i(TAG, " Connection Open Now");
                 String commands = "INSERT INTO dbo.VisitorsData\n" +
-                        "VALUES ('" + firstNameS + "','" + lastNameS + "','" + mobileNumberS + "','" + whomToVisitS + "','" + inTimeS + "','" + visitPurposeS + "','" + remarksS + "','" + profileImageS + "')";
+                        "VALUES ('" + firstNameS + "','" + lastNameS + "','" + mobileNumberS + "','" + whomToVisitS + "','" + inTimeS + "','"  + dateOfVisit + "','" + visitPurposeS + "','" + remarksS + "','" + profileImageS + "')";
                 PreparedStatement preStmt = connection.prepareStatement(commands);
                 preStmt.executeUpdate();
                 Log.i(TAG, "Uploaded Successfully");
