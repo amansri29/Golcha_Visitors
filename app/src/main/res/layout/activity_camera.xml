@@ -4,13 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorPrimary"
     tools:context="com.golchaminerals.visitors.Camera">
 
     <TextureView
         android:id="@+id/texture"
-        android:layout_margin="30dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="30dp"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="match_parent"
         android:layout_above="@+id/time_remaining"
         android:layout_alignParentTop="true"/>
 
@@ -20,7 +22,7 @@
         android:layout_height="wrap_content"
         android:textSize="25dp"
         android:textStyle="bold"
-        android:textColor="@color/colorAccent"
+        android:textColor="#FFFFFF"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"

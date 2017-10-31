@@ -40,16 +40,11 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.activity_login);
-        this.getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_tile_bar);
         login = (Button) findViewById(R.id.btnLogin);
         emaiId = (EditText) findViewById(R.id.email);
         password = (EditText) findViewById(R.id.password);
         emaiId.setImeOptions(EditorInfo.IME_ACTION_NEXT);
-        ImageView imageView = (ImageView) findViewById(R.id.logout);
-        imageView.setVisibility(View.INVISIBLE);
-
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         String userName = sharedPrefs.getString("UserName", "nu");
         if (!userName.equals("nu")) {

@@ -67,9 +67,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-        setContentView(R.layout.activity_main);
-        this.getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_tile_bar);
+        setContentView(R.layout.activity_visitors);
         firstName = (EditText) findViewById(R.id.first_name);
         lastName = (EditText) findViewById(R.id.last_name);
         mobileNumber = (EditText) findViewById(R.id.mobile_number);
@@ -81,10 +79,10 @@ public class MainActivity extends AppCompatActivity {
         ImageView image = (ImageView) findViewById(R.id.logout);
 
 
-        firstName.setHint(getMandatoryTag("First Name"));
-        lastName.setHint(getMandatoryTag("Last Name"));
-        mobileNumber.setHint(getMandatoryTag("Mobile Number"));
-        whomToVisit.setHint(getMandatoryTag("Whom to Visit"));
+//        firstName.setHint(getMandatoryTag("First Name"));
+//        lastName.setHint(getMandatoryTag("Last Name"));
+//        mobileNumber.setHint(getMandatoryTag("Mobile Number"));
+//        whomToVisit.setHint(getMandatoryTag("Whom to Visit"));
 
 
         image.setOnClickListener(new View.OnClickListener() {

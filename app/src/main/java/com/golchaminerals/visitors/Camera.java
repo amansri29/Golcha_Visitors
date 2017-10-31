@@ -81,14 +81,12 @@ public class Camera extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.activity_camera);
-        this.getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_tile_bar);
         textureView = (TextureView) findViewById(R.id.texture);
         assert textureView != null;
         textureView.setSurfaceTextureListener(textureListener);
-        ImageView imageView = (ImageView) findViewById(R.id.logout);
-        imageView.setVisibility(View.INVISIBLE);
+//        ImageView imageView = (ImageView) findViewById(R.id.logout);
+//        imageView.setVisibility(View.INVISIBLE);
         timeRemaining = (TextView) findViewById(R.id.time_remaining);
 //        capturedImage = (ImageView) findViewById(R.id.captured_image);
 //        assert takePictureButton != null;
