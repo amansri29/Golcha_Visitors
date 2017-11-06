@@ -53,13 +53,13 @@ import static java.security.AccessController.getContext;
 public class MainActivity extends AppCompatActivity {
     Spinner visitPurpose;
     ImageView takeImage;
-    EditText firstName, lastName, mobileNumber, inTime, remarks;
+    EditText firstName, lastName, mobileNumber, inTime, remarks, noOfPeople, fromLocation;
     AutoCompleteTextView whomToVisit;
     Button submit;
     private static final int CAMERA_REQUEST = 1888;
     private String TAG = MainActivity.class.getSimpleName();
     private String timeOfVisit, dateOfVisit;
-    String firstNameS, lastNameS, mobileNumberS, whomToVisitS, inTimeS, remarksS, visitPurposeS, profileImageS;
+    String firstNameS, lastNameS, mobileNumberS, whomToVisitS, inTimeS, remarksS, visitPurposeS, profileImageS, noOfPeopleS, fromLocationS;
     ProgressDialog progressDialog;
     Bitmap photoBitMap;
     boolean spinnerDefaultSelection = true;
@@ -74,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
         whomToVisit = (AutoCompleteTextView) findViewById(R.id.whom_to_meet);
         inTime = (EditText) findViewById(R.id.in_time);
         remarks = (EditText) findViewById(R.id.remarks);
+        fromLocation =(EditText) findViewById(R.id.from);
+        noOfPeople = (EditText) findViewById(R.id.total_person);
         submit = (Button) findViewById(R.id.submit);
         visitPurpose = (Spinner) findViewById(R.id.visit_purpose);
         ImageView image = (ImageView) findViewById(R.id.logout);
@@ -159,10 +161,40 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 R.layout.support_simple_spinner_dropdown_item, getResources().getStringArray(R.array.whomToVisit));
         whomToVisit.setThreshold(1);
         whomToVisit.setAdapter(adapter);
+
+
+
+        firstName.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+
+                if(profileImageS == null)
+                {
+                    Intent intent = new Intent(MainActivity.this, com.golchaminerals.visitors.Camera.class);
+                    startActivity(intent);
+                    finish();
+                }
+
+            }
+        });
 
 
         whomToVisit.addTextChangedListener(new TextWatcher() {
@@ -212,8 +244,8 @@ public class MainActivity extends AppCompatActivity {
 
                     if (photoBitMap != null) {
 
-                        if (firstName.getText().toString().trim().equals("") | lastName.getText().toString().trim().equals("") | mobileNumber.getText().toString().trim().equals("") | whomToVisit.getText().toString().trim().equals("")) {
-                            Toast.makeText(MainActivity.this, "Please fill all the fields.", Toast.LENGTH_SHORT).show();
+                        if (firstName.getText().toString().trim().equals("") | lastName.getText().toString().trim().equals("") | mobileNumber.getText().toString().trim().equals("") | whomToVisit.getText().toString().trim().equals("") | noOfPeople.getText().toString().trim().equals("") | fromLocation.getText().toString().trim().equals("")) {
+                            Toast.makeText(MainActivity.this, "Please fields are mandatory except Remarks. Please complete all the fields.", Toast.LENGTH_SHORT).show();
                         } else {
                             progressDialog = new ProgressDialog(MainActivity.this);
 //            progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -227,6 +259,8 @@ public class MainActivity extends AppCompatActivity {
                             inTimeS = timeOfVisit;
                             visitPurposeS = visitPurpose.getSelectedItem().toString();
                             remarksS = remarks.getText().toString();
+                            noOfPeopleS = noOfPeople.getText().toString();
+                            fromLocationS = fromLocation.getText().toString();
                             new uploadDataToServer().execute();
                         }
                     } else {
@@ -291,10 +325,10 @@ public class MainActivity extends AppCompatActivity {
                 String userName = sharedPrefs.getString("UserName", "nu");
                 String passWord2 = sharedPrefs.getString("Password", "np");
                 Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
-                connection = DriverManager.getConnection("jdbc:jtds:sqlserver://182.19.11.77:1433/VisitorsList;user=" + userName + ";password=" + passWord2);
+                connection = DriverManager.getConnection("jdbc:jtds:sqlserver://192.168.36.42:1433/VisitorsList;user=" + userName + ";password=" + passWord2);
                 Log.i(TAG, " Connection Open Now");
                 String commands = "INSERT INTO dbo.VisitorsData\n" +
-                        "VALUES ('" + firstNameS + "','" + lastNameS + "','" + mobileNumberS + "','" + whomToVisitS + "','" + inTimeS + "','"  + dateOfVisit + "','" + visitPurposeS + "','" + remarksS + "','" + profileImageS + "')";
+                        "VALUES ('" + firstNameS + "','" + lastNameS + "','" + mobileNumberS + "','" + whomToVisitS + "','" + inTimeS + "','"  + dateOfVisit + "','" + visitPurposeS + "','" + remarksS + "','" + profileImageS + "','"  + fromLocationS + "','"  + noOfPeopleS + "')";
                 PreparedStatement preStmt = connection.prepareStatement(commands);
                 preStmt.executeUpdate();
                 Log.i(TAG, "Uploaded Successfully");
