@@ -1,6 +1,8 @@
 package com.golchaminerals.visitors;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +16,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
@@ -68,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visitors);
+        if (!isLockState()) {
+            startLockTask();
+        }
         firstName = (EditText) findViewById(R.id.first_name);
         lastName = (EditText) findViewById(R.id.last_name);
         mobileNumber = (EditText) findViewById(R.id.mobile_number);
@@ -89,6 +95,11 @@ public class MainActivity extends AppCompatActivity {
 
         image.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                try {
+                    stopLockTask();     // unpin the screen
+                }catch (SecurityException e){
+                    Log.d(TAG, "securityException: " + e.getLocalizedMessage());
+                }
                 Log.i(TAG, "Button Clicked");
                 SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor = sharedPrefs.edit();
@@ -365,6 +376,25 @@ public class MainActivity extends AppCompatActivity {
         Spannable WordtoSpan = new SpannableString("* " + tagName);
         WordtoSpan.setSpan(new ForegroundColorSpan(Color.RED), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return  WordtoSpan;
+    }
+
+
+    @TargetApi(Build.VERSION_CODES.M)
+    public boolean isLockState() {
+        boolean isLocked = false;
+        ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        try {
+
+            if (am.getLockTaskModeState() == ActivityManager.LOCK_TASK_MODE_NONE) {
+                Log.d(TAG, "Lock task mode is not active.");
+            } else {
+                Log.d(TAG, "Lock task mode is active.");
+                isLocked = true;
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "exception: ",e);
+        }
+        return isLocked;
     }
 
 }
