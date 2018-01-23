@@ -377,6 +377,9 @@ public class Camera extends AppCompatActivity {
                 Toast.makeText(Camera.this, "Sorry!!!, you can't use this app without granting permission", Toast.LENGTH_LONG).show();
                 finish();
             }
+            else{
+                openCamera();
+            }
         }
     }
 }

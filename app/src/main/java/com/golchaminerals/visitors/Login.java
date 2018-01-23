@@ -1,5 +1,8 @@
 package com.golchaminerals.visitors;
 
+import android.annotation.TargetApi;
+import android.app.ActivityManager;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
@@ -40,6 +43,7 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
         login = (Button) findViewById(R.id.btnLogin);
         emaiId = (EditText) findViewById(R.id.email);
@@ -61,6 +65,33 @@ public class Login extends AppCompatActivity {
 
 
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!isLockState()) {
+            startLockTask();
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    public boolean isLockState() {
+        boolean isLocked = false;
+        ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        try {
+
+            if (am.getLockTaskModeState() == ActivityManager.LOCK_TASK_MODE_NONE) {
+                Log.d(TAG, "Lock task mode is not active.");
+            } else {
+                Log.d(TAG, "Lock task mode is active.");
+                isLocked = true;
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "exception: ",e);
+        }
+        return isLocked;
     }
 
     void loginProcess() {

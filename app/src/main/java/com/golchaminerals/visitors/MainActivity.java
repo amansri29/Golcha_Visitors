@@ -95,11 +95,11 @@ public class MainActivity extends AppCompatActivity {
 
         image.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                try {
-                    stopLockTask();     // unpin the screen
-                }catch (SecurityException e){
-                    Log.d(TAG, "securityException: " + e.getLocalizedMessage());
-                }
+//                try {
+//                    stopLockTask();     // unpin the screen
+//                }catch (SecurityException e){
+//                    Log.d(TAG, "securityException: " + e.getLocalizedMessage());
+//                }
                 Log.i(TAG, "Button Clicked");
                 SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor = sharedPrefs.edit();
