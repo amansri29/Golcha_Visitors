@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
+import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
@@ -56,9 +57,13 @@ public class Camera extends AppCompatActivity {
     private TextureView textureView;
     ImageView capturedImage;
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
-
     static {
-        ORIENTATIONS.append(Surface.ROTATION_0, 0);
+//        ORIENTATIONS.append(Surface.ROTATION_0, 0);         // this one is for 10 inch tablet
+//        ORIENTATIONS.append(Surface.ROTATION_90, 0);
+//        ORIENTATIONS.append(Surface.ROTATION_180, 270);
+//        ORIENTATIONS.append(Surface.ROTATION_270, 180);
+
+        ORIENTATIONS.append(Surface.ROTATION_0, 90);
         ORIENTATIONS.append(Surface.ROTATION_90, 0);
         ORIENTATIONS.append(Surface.ROTATION_180, 270);
         ORIENTATIONS.append(Surface.ROTATION_270, 180);
@@ -77,6 +82,7 @@ public class Camera extends AppCompatActivity {
     private Handler mBackgroundHandler;
     private HandlerThread mBackgroundThread;
     TextView timeRemaining;
+   
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +91,10 @@ public class Camera extends AppCompatActivity {
         textureView = (TextureView) findViewById(R.id.texture);
         assert textureView != null;
         textureView.setSurfaceTextureListener(textureListener);
+//        textureView.setRotation(270);      // only for 10 inch tablet
+//        textureView.setRotation(180);
+        
+
 //        ImageView imageView = (ImageView) findViewById(R.id.logout);
 //        imageView.setVisibility(View.INVISIBLE);
         timeRemaining = (TextView) findViewById(R.id.time_remaining);
@@ -96,14 +106,17 @@ public class Camera extends AppCompatActivity {
 //                takePicture();
 //            }
 //        });
-
-
-
     }
 
     TextureView.SurfaceTextureListener textureListener = new TextureView.SurfaceTextureListener() {
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
+
+//            float[] mt = new float[500];
+//            surface.getTransformMatrix(mt);
+//            android.opengl.Matrix.rotateM(mt, 0, 90, 0, 0, 1);
+//            android.opengl.Matrix.translateM(mt, 0, 0, -1, 0);
+            
             //open your camera here
             openCamera();
         }
@@ -324,12 +337,12 @@ public class Camera extends AppCompatActivity {
         Log.e(TAG, "is camera open");
         try {
             cameraId = manager.getCameraIdList()[0];    // default camera
-            for(final String cameraId1 : manager.getCameraIdList()){
-                CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId1);
-                int cOrientation = characteristics.get(CameraCharacteristics.LENS_FACING);
-                if(cOrientation == CameraCharacteristics.LENS_FACING_FRONT)
-                    cameraId = cameraId1;    // front camera
-            }
+//            for(final String cameraId1 : manager.getCameraIdList()){
+//                CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId1);
+//                int cOrientation = characteristics.get(CameraCharacteristics.LENS_FACING);
+//                if(cOrientation == CameraCharacteristics.LENS_FACING_FRONT)
+//                    cameraId = cameraId1;    // front camera
+//            }
             CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
             StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
             assert map != null;

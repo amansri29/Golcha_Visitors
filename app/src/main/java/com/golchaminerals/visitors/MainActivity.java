@@ -47,6 +47,9 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -66,14 +69,15 @@ public class MainActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     Bitmap photoBitMap;
     boolean spinnerDefaultSelection = true;
+    boolean fistVisit = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visitors);
-        if (!isLockState()) {
-            startLockTask();
-        }
+//        if (!isLockState()) {
+//            startLockTask();
+//        }
         firstName = (EditText) findViewById(R.id.first_name);
         lastName = (EditText) findViewById(R.id.last_name);
         mobileNumber = (EditText) findViewById(R.id.mobile_number);
@@ -115,10 +119,6 @@ public class MainActivity extends AppCompatActivity {
         takeImage = (ImageView) findViewById(R.id.take_image);
         takeImage.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-//                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-//                cameraIntent.putExtra("android.intent.extras.LENS_FACING_FRONT", 1);
-//                cameraIntent.putExtra("android.intent.extra.USE_FRONT_CAMERA", true);
-//                startActivityForResult(cameraIntent, CAMERA_REQUEST);
                 Intent intent = new Intent(MainActivity.this, com.golchaminerals.visitors.Camera.class);
                 startActivity(intent);
                 finish();
@@ -197,12 +197,49 @@ public class MainActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
 
+//                if(profileImageS == null)
+//                {
+//                    Intent intent = new Intent(MainActivity.this, com.golchaminerals.visitors.Camera.class);
+//                    startActivity(intent);
+//                    finish();
+//                }
+
+            }
+        });
+
+
+        mobileNumber.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+
                 if(profileImageS == null)
                 {
+
                     Intent intent = new Intent(MainActivity.this, com.golchaminerals.visitors.Camera.class);
                     startActivity(intent);
                     finish();
                 }
+
+
+                    Log.i(TAG, s.toString() + Integer.toString(count));
+                    if(s.length() == 10) {
+                        Log.i(TAG, s.toString() + "  " + Integer.toString(count));
+                        mobileNumberS = s.toString();
+                        new getPreviousData().execute();
+                    }
 
             }
         });
@@ -321,12 +358,17 @@ public class MainActivity extends AppCompatActivity {
         public Connection connection;
         boolean uploadStatus = false;
 
+        String inputLocation;
+
 
         @Override
         protected void onPreExecute() {
+
 //            ByteArrayOutputStream stream = new ByteArrayOutputStream();
 //            boolean compress = photoBitMap.compress(Bitmap.CompressFormat.PNG, 50, stream);
 //            profileImageS = Base64.encodeToString(stream.toByteArray(), Base64.DEFAULT);
+            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            inputLocation = sharedPrefs.getString("inputLocation", "No Location");
         }
 
         @Override
@@ -336,10 +378,10 @@ public class MainActivity extends AppCompatActivity {
                 String userName = sharedPrefs.getString("UserName", "nu");
                 String passWord2 = sharedPrefs.getString("Password", "np");
                 Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
-                connection = DriverManager.getConnection("jdbc:jtds:sqlserver://192.168.36.42:1433/VisitorsList;user=" + userName + ";password=" + passWord2);
+                connection = DriverManager.getConnection("jdbc:jtds:sqlserver://45.114.141.43:1433/VisitorsList;user=" + userName + ";password=" + passWord2);
                 Log.i(TAG, " Connection Open Now");
                 String commands = "INSERT INTO dbo.VisitorsData\n" +
-                        "VALUES ('" + firstNameS + "','" + lastNameS + "','" + mobileNumberS + "','" + whomToVisitS + "','" + inTimeS + "','"  + dateOfVisit + "','" + visitPurposeS + "','" + remarksS + "','" + profileImageS + "','"  + fromLocationS + "','"  + noOfPeopleS + "')";
+                        "VALUES ('" + inputLocation + "','" + firstNameS + "','" + lastNameS + "','" + mobileNumberS + "','" + whomToVisitS + "','" + inTimeS + "','"  + dateOfVisit + "','" + visitPurposeS + "','" + remarksS + "','" + profileImageS + "','"  + fromLocationS + "','"  + noOfPeopleS + "')";
                 PreparedStatement preStmt = connection.prepareStatement(commands);
                 preStmt.executeUpdate();
                 Log.i(TAG, "Uploaded Successfully");
@@ -365,6 +407,66 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Error, Please try again", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
+        }
+    }
+
+
+    public class getPreviousData extends AsyncTask<Void, Void, Void> {
+        public Connection connection;
+        ResultSet resultSet;
+
+        @Override
+        protected void onPreExecute() {
+//            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//            boolean compress = photoBitMap.compress(Bitmap.CompressFormat.PNG, 50, stream);
+//            profileImageS = Base64.encodeToString(stream.toByteArray(), Base64.DEFAULT);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                String userName = sharedPrefs.getString("UserName", "nu");
+                String passWord2 = sharedPrefs.getString("Password", "np");
+                Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
+                connection = DriverManager.getConnection("jdbc:jtds:sqlserver://45.114.141.43:1433/VisitorsList;user=" + userName + ";password=" + passWord2);
+                Log.i(TAG, " Connection Open Now");
+                String commands = "INSERT INTO dbo.VisitorsData\n" +
+                        "VALUES ('" + firstNameS + "','" + lastNameS + "','" + mobileNumberS + "','" + whomToVisitS + "','" + inTimeS + "','"  + dateOfVisit + "','" + visitPurposeS + "','" + remarksS + "','" + profileImageS + "','"  + fromLocationS + "','"  + noOfPeopleS + "')";
+                Statement stmt = connection.createStatement();
+//            Log.i(TAG, "Application Status " + UtilClass.applicationActive);
+
+                        resultSet = stmt.executeQuery("select top 1 FirstName, LastName, WhomToMeet, PurposeOfVisit,FromLocation, Remark, No_of_People from [dbo].[VisitorsData] where MobileNumber ='" + mobileNumberS + "' order by InDate desc, InTime desc");
+
+            } catch (Exception e) {
+                Log.w("Error connection", "" + e.getMessage());
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            try {
+                while (resultSet.next()) {
+                    firstName.setText(resultSet.getString("FirstName"));
+                    lastName.setText(resultSet.getString("LastName"));
+                    whomToVisit.setText(resultSet.getString("WhomToMeet"));
+                    if(resultSet.getString("PurposeOfVisit").equals("Official"))
+                    {
+                        visitPurpose.setSelection(0);
+                    }
+                    else
+                    {
+                        visitPurpose.setSelection(1);
+                    }
+                    noOfPeople.setText(resultSet.getString("No_of_People"));
+                    remarks.setText(resultSet.getString("Remark"));
+                    fromLocation.setText(resultSet.getString("FromLocation"));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
         }
 
 

@@ -8,7 +8,26 @@
     </string-array>
 
 
+    <string-array name="locations">
+    <item>Jaipur</item>
+
+        <item>Mumbai</item>
+        <item>Chainpura</item>
+        <item>Rajgarh</item>
+        <item>Ghewaria New Plant</item>
+        <item>Ghewaria Mines</item>
+        <item>Bhilwara</item>
+        <item>Mandalgarh</item>
+        <item>Dausa</item>
+        <item>Bapi</item>
+        <item>Dagota</item>
+
+    </string-array>
+
+
     <string-array name="whomToVisit">
+        <item>CHICO</item>
+        <item>PAWAN SOMANI</item>
         <item>AMITAV NARESH</item>
         <item>MOTI LAL SHARMA</item>
         <item>A.B.DANGAYACH</item>

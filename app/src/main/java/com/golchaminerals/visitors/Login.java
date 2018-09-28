@@ -23,6 +23,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,17 +40,20 @@ public class Login extends AppCompatActivity {
     Button login;
     boolean connectionFailed = false;
     final String TAG = "LoginActivity";
+    Spinner inputLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
+        inputLocation = (Spinner) findViewById(R.id.input_location);
         login = (Button) findViewById(R.id.btnLogin);
         emaiId = (EditText) findViewById(R.id.email);
         password = (EditText) findViewById(R.id.password);
         emaiId.setImeOptions(EditorInfo.IME_ACTION_NEXT);
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        final SharedPreferences.Editor editor = sharedPrefs.edit();
         String userName = sharedPrefs.getString("UserName", "nu");
         if (!userName.equals("nu")) {
             emaiId.setText(userName);
@@ -59,6 +63,8 @@ public class Login extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                editor.putString("inputLocation", inputLocation.getSelectedItem().toString());
+                editor.commit();
                 loginProcess();
             }
         });
@@ -71,9 +77,9 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!isLockState()) {
-            startLockTask();
-        }
+//        if (!isLockState()) {
+//            startLockTask();
+//        }
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -107,6 +113,7 @@ public class Login extends AppCompatActivity {
             userName = emaiId.getText().toString();
             passWord2 = password.getText().toString();
             if (userName.trim().equals("") || passWord2.trim().equals("")) {
+
                 Toast.makeText(Login.this, "Please complete the field", Toast.LENGTH_SHORT).show();
             } else {
                 new getLoginDetails().execute();
@@ -134,7 +141,7 @@ public class Login extends AppCompatActivity {
 
             try {
                 Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
-                Connection connection = DriverManager.getConnection("jdbc:jtds:sqlserver://192.168.36.42:1433;user=" + userName + ";password=" + passWord2);
+                Connection connection = DriverManager.getConnection("jdbc:jtds:sqlserver://45.114.141.43:1433;user=" + userName + ";password=" + passWord2);
                 Log.i("Connection  Login", " Connection Open Now");
                 if (connection == null) {
                     connectionFailed = true;
