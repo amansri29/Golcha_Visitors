@@ -37,6 +37,7 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,18 +57,8 @@ public class Camera extends AppCompatActivity {
 //    private Button takePictureButton;
     private TextureView textureView;
     ImageView capturedImage;
+    private boolean frontCam = false;
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
-    static {
-//        ORIENTATIONS.append(Surface.ROTATION_0, 0);         // this one is for 10 inch tablet
-//        ORIENTATIONS.append(Surface.ROTATION_90, 0);
-//        ORIENTATIONS.append(Surface.ROTATION_180, 270);
-//        ORIENTATIONS.append(Surface.ROTATION_270, 180);
-
-        ORIENTATIONS.append(Surface.ROTATION_0, 90);
-        ORIENTATIONS.append(Surface.ROTATION_90, 0);
-        ORIENTATIONS.append(Surface.ROTATION_180, 270);
-        ORIENTATIONS.append(Surface.ROTATION_270, 180);
-    }
 
     private String cameraId;
     protected CameraDevice cameraDevice;
@@ -82,13 +73,34 @@ public class Camera extends AppCompatActivity {
     private Handler mBackgroundHandler;
     private HandlerThread mBackgroundThread;
     TextView timeRemaining;
+    private ImageButton clickPic, switchCamera;
    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
+
+//        ORIENTATIONS.append(Surface.ROTATION_0, 0);         // this one is for 10 inch tablet
+//        ORIENTATIONS.append(Surface.ROTATION_90, 0);
+//        ORIENTATIONS.append(Surface.ROTATION_180, 270);
+//        ORIENTATIONS.append(Surface.ROTATION_270, 180);
+
+            ORIENTATIONS.append(Surface.ROTATION_0, 90);
+            ORIENTATIONS.append(Surface.ROTATION_90, 0);
+            ORIENTATIONS.append(Surface.ROTATION_180, 270);
+            ORIENTATIONS.append(Surface.ROTATION_270, 180);
+
+
+//        ORIENTATIONS.append(Surface.ROTATION_0, 270);
+//        ORIENTATIONS.append(Surface.ROTATION_90, 0);
+//        ORIENTATIONS.append(Surface.ROTATION_180, 270);
+//        ORIENTATIONS.append(Surface.ROTATION_270, 180);
+        
+
         textureView = (TextureView) findViewById(R.id.texture);
+        clickPic = (ImageButton) findViewById(R.id.capture_image);
+        switchCamera = (ImageButton) findViewById(R.id.switch_camera);
         assert textureView != null;
         textureView.setSurfaceTextureListener(textureListener);
 //        textureView.setRotation(270);      // only for 10 inch tablet
@@ -106,6 +118,42 @@ public class Camera extends AppCompatActivity {
 //                takePicture();
 //            }
 //        });
+
+
+        clickPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                takePicture();
+            }
+        });
+
+        switchCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(frontCam)
+                {
+                    frontCam = false;
+                    ORIENTATIONS.clear();
+                    ORIENTATIONS.append(Surface.ROTATION_0, 90);
+                    ORIENTATIONS.append(Surface.ROTATION_90, 0);
+                    ORIENTATIONS.append(Surface.ROTATION_180, 270);
+                    ORIENTATIONS.append(Surface.ROTATION_270, 180);
+                }
+                else
+                {
+                    frontCam = true;
+                    ORIENTATIONS.clear();
+                    ORIENTATIONS.append(Surface.ROTATION_0, 270);
+                    ORIENTATIONS.append(Surface.ROTATION_90, 0);
+                    ORIENTATIONS.append(Surface.ROTATION_180, 270);
+                    ORIENTATIONS.append(Surface.ROTATION_270, 180);
+                }
+
+                closeCamera();
+                openCamera();
+
+            }
+        });
     }
 
     TextureView.SurfaceTextureListener textureListener = new TextureView.SurfaceTextureListener() {
@@ -142,17 +190,17 @@ public class Camera extends AppCompatActivity {
             Log.e(TAG, "onOpened");
             cameraDevice = camera;
             createCameraPreview();
-            timeRemaining.setVisibility(View.VISIBLE);
-            new CountDownTimer(3000, 1000) {
-                public void onTick(long m) {
-                    long sec = m/1000;
-                    timeRemaining.setText("Capturing in next " +  sec + "sec");
-                }
-                public void onFinish() {
-                    timeRemaining.setText("Capturing");
-                    takePicture();
-                }
-            }.start();
+//            timeRemaining.setVisibility(View.VISIBLE);
+//            new CountDownTimer(30000, 1000) {
+//                public void onTick(long m) {
+//                    long sec = m/1000;
+//                    timeRemaining.setText("Capturing in next " +  sec + "sec");
+//                }
+//                public void onFinish() {
+//                    timeRemaining.setText("Capturing");
+//                    takePicture();
+//                }
+//            }.start();
 
         }
 
@@ -337,12 +385,14 @@ public class Camera extends AppCompatActivity {
         Log.e(TAG, "is camera open");
         try {
             cameraId = manager.getCameraIdList()[0];    // default camera
-//            for(final String cameraId1 : manager.getCameraIdList()){
-//                CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId1);
-//                int cOrientation = characteristics.get(CameraCharacteristics.LENS_FACING);
-//                if(cOrientation == CameraCharacteristics.LENS_FACING_FRONT)
-//                    cameraId = cameraId1;    // front camera
-//            }
+            if(frontCam) {
+                for (final String cameraId1 : manager.getCameraIdList()) {
+                    CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId1);
+                    int cOrientation = characteristics.get(CameraCharacteristics.LENS_FACING);
+                    if (cOrientation == CameraCharacteristics.LENS_FACING_FRONT)
+                        cameraId = cameraId1;    // front camera
+                }
+            }
             CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
             StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
             assert map != null;
@@ -381,6 +431,7 @@ public class Camera extends AppCompatActivity {
             imageReader = null;
         }
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
