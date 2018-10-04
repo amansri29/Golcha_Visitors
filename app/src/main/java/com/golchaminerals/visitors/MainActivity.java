@@ -30,6 +30,7 @@ import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
@@ -38,8 +39,11 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -62,10 +66,12 @@ public class MainActivity extends AppCompatActivity {
     EditText firstName, lastName, mobileNumber, inTime, remarks, noOfPeople, fromLocation;
     AutoCompleteTextView whomToVisit;
     Button submit;
+    ImageButton addPerson, subPerson;
+    private LinearLayout addCopersonLayout;
     private static final int CAMERA_REQUEST = 1888;
     private String TAG = MainActivity.class.getSimpleName();
     private String timeOfVisit, dateOfVisit;
-    String firstNameS, lastNameS, mobileNumberS, whomToVisitS, inTimeS, remarksS, visitPurposeS, profileImageS, noOfPeopleS, fromLocationS;
+    String firstNameS, lastNameS, mobileNumberS, whomToVisitS, inTimeS, remarksS, visitPurposeS, profileImageS, noOfPeopleS, fromLocationS, CoPersonNames;
     ProgressDialog progressDialog;
     Bitmap photoBitMap;
     boolean spinnerDefaultSelection = true;
@@ -78,17 +84,50 @@ public class MainActivity extends AppCompatActivity {
 //        if (!isLockState()) {
 //            startLockTask();
 //        }
+        addCopersonLayout = (LinearLayout) findViewById(R.id.add_coperson_layout);
+        addPerson = (ImageButton) findViewById(R.id.add_coperson);
+        subPerson = (ImageButton) findViewById(R.id.sub_coperson);
         firstName = (EditText) findViewById(R.id.first_name);
         lastName = (EditText) findViewById(R.id.last_name);
         mobileNumber = (EditText) findViewById(R.id.mobile_number);
         whomToVisit = (AutoCompleteTextView) findViewById(R.id.whom_to_meet);
         inTime = (EditText) findViewById(R.id.in_time);
         remarks = (EditText) findViewById(R.id.remarks);
-        fromLocation =(EditText) findViewById(R.id.from);
+        fromLocation = (EditText) findViewById(R.id.from);
         noOfPeople = (EditText) findViewById(R.id.total_person);
         submit = (Button) findViewById(R.id.submit);
         visitPurpose = (Spinner) findViewById(R.id.visit_purpose);
         ImageView image = (ImageView) findViewById(R.id.logout);
+
+        noOfPeople.setEnabled(false);
+
+
+        addPerson.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                noOfPeople.setText(Integer.toString(Integer.parseInt(noOfPeople.getText().toString()) + 1));
+                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                final View rowView = inflater.inflate(R.layout.add_coperson, null);
+                // Add the new row before the add field button.
+                addCopersonLayout.addView(rowView, addCopersonLayout.getChildCount() - 1);
+                for(int i = 1; i < Integer.parseInt(noOfPeople.getText().toString()) ; i++) {
+                    TextView title = (TextView)addCopersonLayout.getChildAt(i - 1).findViewById(R.id.co_person_title);
+                    title.setText(Integer.toString(i) + ". Co-Person Name " );
+                }
+            }
+        });
+
+
+        subPerson.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Integer.parseInt(noOfPeople.getText().toString()) >= 2) {
+                    noOfPeople.setText(Integer.toString(Integer.parseInt(noOfPeople.getText().toString()) - 1));
+                    addCopersonLayout.removeViewAt(addCopersonLayout.getChildCount() - 1);
+
+                }
+            }
+        });
 
 
 //        firstName.setHint(getMandatoryTag("First Name"));
@@ -158,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
                 // If the event is a key-down event on the "enter" button
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                     visitPurpose.setFocusableInTouchMode(true);
                     visitPurpose.requestFocus();
@@ -170,14 +209,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-
-
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 R.layout.support_simple_spinner_dropdown_item, getResources().getStringArray(R.array.whomToVisit));
         whomToVisit.setThreshold(1);
         whomToVisit.setAdapter(adapter);
-
 
 
         firstName.addTextChangedListener(new TextWatcher() {
@@ -225,8 +260,7 @@ public class MainActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
 
-                if(profileImageS == null)
-                {
+                if (profileImageS == null) {
 
                     Intent intent = new Intent(MainActivity.this, com.golchaminerals.visitors.Camera.class);
                     startActivity(intent);
@@ -234,12 +268,12 @@ public class MainActivity extends AppCompatActivity {
                 }
 
 
-                    Log.i(TAG, s.toString() + Integer.toString(count));
-                    if(s.length() == 10) {
-                        Log.i(TAG, s.toString() + "  " + Integer.toString(count));
-                        mobileNumberS = s.toString();
-                        new getPreviousData().execute();
-                    }
+                Log.i(TAG, s.toString() + Integer.toString(count));
+                if (s.length() == 10) {
+                    Log.i(TAG, s.toString() + "  " + Integer.toString(count));
+                    mobileNumberS = s.toString();
+                    new getPreviousData().execute();
+                }
 
             }
         });
@@ -292,24 +326,68 @@ public class MainActivity extends AppCompatActivity {
 
                     if (photoBitMap != null) {
 
-                        if (firstName.getText().toString().trim().equals("") | lastName.getText().toString().trim().equals("") | mobileNumber.getText().toString().trim().equals("") | whomToVisit.getText().toString().trim().equals("") | noOfPeople.getText().toString().trim().equals("") | fromLocation.getText().toString().trim().equals("")) {
-                            Toast.makeText(MainActivity.this, "Please fields are mandatory except Remarks. Please complete all the fields.", Toast.LENGTH_SHORT).show();
+                        if (firstName.getText().toString().trim().equals("") | mobileNumber.getText().toString().trim().equals("") | whomToVisit.getText().toString().trim().equals("") | noOfPeople.getText().toString().trim().equals("") | fromLocation.getText().toString().trim().equals("")) {
+
+                            Toast.makeText(MainActivity.this, "All fields are mandatory except Remarks. Please complete all the fields.", Toast.LENGTH_SHORT).show();
                         } else {
-                            progressDialog = new ProgressDialog(MainActivity.this);
+
+                            if(Integer.parseInt(noOfPeople.getText().toString()) != 1) {
+                                for (int i = 1; i < Integer.parseInt(noOfPeople.getText().toString()); i++) {
+                                    EditText name = (EditText) addCopersonLayout.getChildAt(i - 1).findViewById(R.id.coperson_name);
+
+//                                    Log.i(TAG, "coPerson Name Before:  " + CoPersonNames );
+//                                    Log.i(TAG, "onClick: Coperson Name " + name.getText().toString());
+                                    if( i == 1)
+                                    {
+                                        CoPersonNames = name.getText().toString();
+                                    }
+                                    else {
+                                        CoPersonNames = CoPersonNames.concat( ", " + name.getText().toString());
+                                    }
+//                                    Log.i(TAG, "coPerson Name After:  " + CoPersonNames );
+                                    if (CoPersonNames.trim().equals("")) {
+                                        Toast.makeText(MainActivity.this, "All fields are mandatory except Remarks. Please complete all the fields.", Toast.LENGTH_SHORT).show();
+                                        break;
+                                    } else {
+                                        if (i == Integer.parseInt(noOfPeople.getText().toString()) - 1) {
+                                            progressDialog = new ProgressDialog(MainActivity.this);
 //            progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                            progressDialog.setMessage("Please wait your data is being uploaded");
-                            progressDialog.setCancelable(false);
-                            progressDialog.show();
-                            firstNameS = firstName.getText().toString();
-                            lastNameS = lastName.getText().toString();
-                            mobileNumberS = mobileNumber.getText().toString();
-                            whomToVisitS = whomToVisit.getText().toString();
-                            inTimeS = timeOfVisit;
-                            visitPurposeS = visitPurpose.getSelectedItem().toString();
-                            remarksS = remarks.getText().toString();
-                            noOfPeopleS = noOfPeople.getText().toString();
-                            fromLocationS = fromLocation.getText().toString();
-                            new uploadDataToServer().execute();
+                                            progressDialog.setMessage("Please wait your data is being uploaded");
+                                            progressDialog.setCancelable(false);
+                                            progressDialog.show();
+                                            firstNameS = firstName.getText().toString();
+//                            lastNameS = lastName.getText().toString();
+
+                                            mobileNumberS = mobileNumber.getText().toString();
+                                            whomToVisitS = whomToVisit.getText().toString();
+                                            inTimeS = timeOfVisit;
+                                            visitPurposeS = visitPurpose.getSelectedItem().toString();
+                                            remarksS = remarks.getText().toString();
+                                            noOfPeopleS = noOfPeople.getText().toString();
+                                            fromLocationS = fromLocation.getText().toString();
+                                            new uploadDataToServer().execute();
+                                        }
+                                    }
+                                }
+                            }
+                            else {
+                                progressDialog = new ProgressDialog(MainActivity.this);
+//            progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                progressDialog.setMessage("Please wait your data is being uploaded");
+                                progressDialog.setCancelable(false);
+                                progressDialog.show();
+                                firstNameS = firstName.getText().toString();
+//                            lastNameS = lastName.getText().toString();
+
+                                mobileNumberS = mobileNumber.getText().toString();
+                                whomToVisitS = whomToVisit.getText().toString();
+                                inTimeS = timeOfVisit;
+                                visitPurposeS = visitPurpose.getSelectedItem().toString();
+                                remarksS = remarks.getText().toString();
+                                noOfPeopleS = noOfPeople.getText().toString();
+                                fromLocationS = fromLocation.getText().toString();
+                                new uploadDataToServer().execute();
+                            }
                         }
                     } else {
                         Toast.makeText(MainActivity.this, "Please capture your profile image.", Toast.LENGTH_SHORT).show();
@@ -380,8 +458,8 @@ public class MainActivity extends AppCompatActivity {
                 Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
                 connection = DriverManager.getConnection("jdbc:jtds:sqlserver://45.114.141.43:1433/VisitorsList;user=" + userName + ";password=" + passWord2);
                 Log.i(TAG, " Connection Open Now");
-                String commands = "INSERT INTO dbo.VisitorsData\n" +
-                        "VALUES ('" + inputLocation + "','" + firstNameS + "','" + lastNameS + "','" + mobileNumberS + "','" + whomToVisitS + "','" + inTimeS + "','"  + dateOfVisit + "','" + visitPurposeS + "','" + remarksS + "','" + profileImageS + "','"  + fromLocationS + "','"  + noOfPeopleS + "')";
+                String commands = "INSERT INTO dbo.VisitorsData2\n" +
+                        "VALUES ('" +  userName + "','" + inputLocation +  "','" + profileImageS + "','"  + mobileNumberS + "','" + firstNameS + "','" + noOfPeopleS + "','" + CoPersonNames + "','" + fromLocationS + "','" + whomToVisitS + "','" + inTimeS + "','" + dateOfVisit + "', '' , '', ' "   + visitPurposeS + "','" + remarksS + "')";
                 PreparedStatement preStmt = connection.prepareStatement(commands);
                 preStmt.executeUpdate();
                 Log.i(TAG, "Uploaded Successfully");
@@ -432,11 +510,11 @@ public class MainActivity extends AppCompatActivity {
                 connection = DriverManager.getConnection("jdbc:jtds:sqlserver://45.114.141.43:1433/VisitorsList;user=" + userName + ";password=" + passWord2);
                 Log.i(TAG, " Connection Open Now");
                 String commands = "INSERT INTO dbo.VisitorsData\n" +
-                        "VALUES ('" + firstNameS + "','" + lastNameS + "','" + mobileNumberS + "','" + whomToVisitS + "','" + inTimeS + "','"  + dateOfVisit + "','" + visitPurposeS + "','" + remarksS + "','" + profileImageS + "','"  + fromLocationS + "','"  + noOfPeopleS + "')";
+                        "VALUES ('" + firstNameS + "','" + lastNameS + "','" + mobileNumberS + "','" + whomToVisitS + "','" + inTimeS + "','" + dateOfVisit + "','" + visitPurposeS + "','" + remarksS + "','" + profileImageS + "','" + fromLocationS + "','" + noOfPeopleS + "')";
                 Statement stmt = connection.createStatement();
 //            Log.i(TAG, "Application Status " + UtilClass.applicationActive);
 
-                        resultSet = stmt.executeQuery("select top 1 FirstName, LastName, WhomToMeet, PurposeOfVisit,FromLocation, Remark, No_of_People from [dbo].[VisitorsData] where MobileNumber ='" + mobileNumberS + "' order by InDate desc, InTime desc");
+                resultSet = stmt.executeQuery("select top 1 FirstName, LastName, WhomToMeet, PurposeOfVisit,FromLocation, Remark, No_of_People from [dbo].[VisitorsData] where MobileNumber ='" + mobileNumberS + "' order by InDate desc, InTime desc");
 
             } catch (Exception e) {
                 Log.w("Error connection", "" + e.getMessage());
@@ -451,12 +529,9 @@ public class MainActivity extends AppCompatActivity {
                     firstName.setText(resultSet.getString("FirstName"));
                     lastName.setText(resultSet.getString("LastName"));
                     whomToVisit.setText(resultSet.getString("WhomToMeet"));
-                    if(resultSet.getString("PurposeOfVisit").equals("Official"))
-                    {
+                    if (resultSet.getString("PurposeOfVisit").equals("Official")) {
                         visitPurpose.setSelection(0);
-                    }
-                    else
-                    {
+                    } else {
                         visitPurpose.setSelection(1);
                     }
                     noOfPeople.setText(resultSet.getString("No_of_People"));
@@ -473,11 +548,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    Spannable getMandatoryTag(String tagName)
-    {
+    Spannable getMandatoryTag(String tagName) {
         Spannable WordtoSpan = new SpannableString("* " + tagName);
         WordtoSpan.setSpan(new ForegroundColorSpan(Color.RED), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return  WordtoSpan;
+        return WordtoSpan;
     }
 
 
@@ -494,7 +568,7 @@ public class MainActivity extends AppCompatActivity {
                 isLocked = true;
             }
         } catch (Exception e) {
-            Log.d(TAG, "exception: ",e);
+            Log.d(TAG, "exception: ", e);
         }
         return isLocked;
     }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF">
@@ -13,51 +14,51 @@
         android:layout_marginRight="20dp"
         android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Welcome to Golcha Group"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="@color/colorPrimary" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Welcome to Golcha Group"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/colorPrimary" />
 
-    <ImageView
-        android:id="@+id/take_image"
-        android:layout_width="150dp"
-        android:layout_height="160dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/visitor_background"
-        android:padding="2dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/addimage" />
+        <ImageView
+            android:id="@+id/take_image"
+            android:layout_width="150dp"
+            android:layout_height="160dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/visitor_background"
+            android:padding="2dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/addimage" />
 
-    <!--<LinearLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:layout_marginTop="10dp"-->
-    <!--android:gravity="center"-->
-    <!--android:orientation="vertical">-->
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:gravity="center"-->
+        <!--android:orientation="vertical">-->
 
-    <!--<android.support.v7.widget.CardView-->
-    <!--android:id="@+id/card_view"-->
-    <!--android:layout_width="180dp"-->
-    <!--android:layout_height="180dp"-->
-    <!--app:cardCornerRadius="90dp">-->
+        <!--<android.support.v7.widget.CardView-->
+        <!--android:id="@+id/card_view"-->
+        <!--android:layout_width="180dp"-->
+        <!--android:layout_height="180dp"-->
+        <!--app:cardCornerRadius="90dp">-->
 
-    <!--<ImageView-->
-    <!--android:id="@+id/take_image"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:gravity="center_vertical"-->
-    <!--android:scaleType="fitXY"-->
-    <!--android:src="@drawable/profileimage" />-->
+        <!--<ImageView-->
+        <!--android:id="@+id/take_image"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:scaleType="fitXY"-->
+        <!--android:src="@drawable/profileimage" />-->
 
-    <!--</android.support.v7.widget.CardView>-->
+        <!--</android.support.v7.widget.CardView>-->
 
 
-    <!--</LinearLayout>-->
+        <!--</LinearLayout>-->
 
 
         <LinearLayout
@@ -95,73 +96,173 @@
         </LinearLayout>
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Name" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/visitor_background"
+                android:gravity="center_vertical"
+                android:padding="10dp">
+
+
+                <EditText
+                    android:id="@+id/first_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:inputType="textCapCharacters"
+                    android:maxLines="1" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_weight="1"-->
+        <!--android:orientation="vertical"-->
+        <!--android:padding="5dp">-->
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginBottom="10dp"-->
+        <!--android:text="Last Name" />-->
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@drawable/visitor_background"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:padding="10dp">-->
+
+
+        <!--<EditText-->
+        <!--android:id="@id/last_name"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@android:color/transparent"-->
+        <!--android:inputType="textCapCharacters"-->
+        <!--android:maxLines="1" />-->
+
+        <!--</LinearLayout>-->
+
+
+        <!--</LinearLayout>-->
+
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="No. of Person " />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/visitor_background"
+                    android:gravity="center_vertical"
+                    android:padding="3dp"
+                   >
+
+
+                    <EditText
+
+                        android:layout_marginLeft="5dp"
+                        android:padding="4dp"
+                        android:id="@+id/total_person"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:inputType="number"
+                        android:text="1"
+                        android:maxLines="1" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <android.support.v7.widget.CardView
+                android:layout_marginTop="5dp"
+                android:id="@+id/card_view"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="50dp"
+                app:cardElevation="2dp"
+
+                >
+
+                <ImageButton
+                    android:clickable="true"
+                    android:id="@+id/add_coperson"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@android:color/white"
+                    android:src="@drawable/plusone" />
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_marginTop="5dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="50dp"
+                app:cardElevation="2dp"
+
+                >
+
+                <ImageButton
+                    android:clickable="true"
+                    android:id="@+id/sub_coperson"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@android:color/white"
+                    android:src="@drawable/negative" />
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+
+
     <LinearLayout
+        android:id="@+id/add_coperson_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:padding="5dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="First Name" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/visitor_background"
-            android:gravity="center_vertical"
-            android:padding="10dp">
-
-
-            <EditText
-                android:id="@+id/first_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:inputType="textCapCharacters"
-                android:maxLines="1" />
-
-        </LinearLayout>
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:padding="5dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="Last Name" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/visitor_background"
-            android:gravity="center_vertical"
-            android:padding="10dp">
-
-
-            <EditText
-                android:id="@id/last_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:inputType="textCapCharacters"
-                android:maxLines="1" />
-
-        </LinearLayout>
-
-
-    </LinearLayout>
+        android:padding="5dp"/>
 
 
         <LinearLayout
@@ -195,39 +296,6 @@
 
             </LinearLayout>
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:padding="5dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="No. of People " />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/visitor_background"
-                android:gravity="center_vertical"
-                android:padding="10dp">
-
-
-                <EditText
-                    android:id="@+id/total_person"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:inputType="number"
-                    android:maxLines="1" />
-
-            </LinearLayout>
-        </LinearLayout>
-
 
 
         <LinearLayout
