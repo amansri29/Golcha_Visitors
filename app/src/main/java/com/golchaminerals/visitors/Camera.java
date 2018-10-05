@@ -96,7 +96,7 @@ public class Camera extends AppCompatActivity {
 //        ORIENTATIONS.append(Surface.ROTATION_90, 0);
 //        ORIENTATIONS.append(Surface.ROTATION_180, 270);
 //        ORIENTATIONS.append(Surface.ROTATION_270, 180);
-        
+
 
         textureView = (TextureView) findViewById(R.id.texture);
         clickPic = (ImageButton) findViewById(R.id.capture_image);

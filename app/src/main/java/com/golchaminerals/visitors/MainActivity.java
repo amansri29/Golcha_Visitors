@@ -19,6 +19,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -61,9 +62,10 @@ import static android.R.layout.simple_dropdown_item_1line;
 import static java.security.AccessController.getContext;
 
 public class MainActivity extends AppCompatActivity {
+    private FloatingActionButton gateOut;
     Spinner visitPurpose;
     ImageView takeImage;
-    EditText firstName, lastName, mobileNumber, inTime, remarks, noOfPeople, fromLocation;
+    EditText firstName, lastName, mobileNumber, inTime, remarks, noOfPeople, fromLocation, vehicleNo;
     AutoCompleteTextView whomToVisit;
     Button submit;
     ImageButton addPerson, subPerson;
@@ -71,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int CAMERA_REQUEST = 1888;
     private String TAG = MainActivity.class.getSimpleName();
     private String timeOfVisit, dateOfVisit;
-    String firstNameS, lastNameS, mobileNumberS, whomToVisitS, inTimeS, remarksS, visitPurposeS, profileImageS, noOfPeopleS, fromLocationS, CoPersonNames;
+    String firstNameS, vehicleNoS, lastNameS, mobileNumberS, whomToVisitS, inTimeS, remarksS, visitPurposeS, profileImageS, noOfPeopleS, fromLocationS, CoPersonNames;
     ProgressDialog progressDialog;
     Bitmap photoBitMap;
     boolean spinnerDefaultSelection = true;
@@ -84,6 +86,9 @@ public class MainActivity extends AppCompatActivity {
 //        if (!isLockState()) {
 //            startLockTask();
 //        }
+
+        vehicleNo = (EditText) findViewById(R.id.vehicle_no);
+        gateOut = (FloatingActionButton) findViewById(R.id.visitor_out);
         addCopersonLayout = (LinearLayout) findViewById(R.id.add_coperson_layout);
         addPerson = (ImageButton) findViewById(R.id.add_coperson);
         subPerson = (ImageButton) findViewById(R.id.sub_coperson);
@@ -100,6 +105,14 @@ public class MainActivity extends AppCompatActivity {
         ImageView image = (ImageView) findViewById(R.id.logout);
 
         noOfPeople.setEnabled(false);
+
+        gateOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, VistorsOut.class);
+                startActivity(intent);
+            }
+        });
 
 
         addPerson.setOnClickListener(new View.OnClickListener() {
@@ -326,7 +339,7 @@ public class MainActivity extends AppCompatActivity {
 
                     if (photoBitMap != null) {
 
-                        if (firstName.getText().toString().trim().equals("") | mobileNumber.getText().toString().trim().equals("") | whomToVisit.getText().toString().trim().equals("") | noOfPeople.getText().toString().trim().equals("") | fromLocation.getText().toString().trim().equals("")) {
+                        if (vehicleNo.getText().toString().trim().equals("") | firstName.getText().toString().trim().equals("") | mobileNumber.getText().toString().trim().equals("") | whomToVisit.getText().toString().trim().equals("") | noOfPeople.getText().toString().trim().equals("") | fromLocation.getText().toString().trim().equals("")) {
 
                             Toast.makeText(MainActivity.this, "All fields are mandatory except Remarks. Please complete all the fields.", Toast.LENGTH_SHORT).show();
                         } else {
@@ -365,6 +378,7 @@ public class MainActivity extends AppCompatActivity {
                                             remarksS = remarks.getText().toString();
                                             noOfPeopleS = noOfPeople.getText().toString();
                                             fromLocationS = fromLocation.getText().toString();
+                                            vehicleNoS = vehicleNo.getText().toString();
                                             new uploadDataToServer().execute();
                                         }
                                     }
@@ -380,6 +394,7 @@ public class MainActivity extends AppCompatActivity {
 //                            lastNameS = lastName.getText().toString();
 
                                 mobileNumberS = mobileNumber.getText().toString();
+                                vehicleNoS = vehicleNo.getText().toString();
                                 whomToVisitS = whomToVisit.getText().toString();
                                 inTimeS = timeOfVisit;
                                 visitPurposeS = visitPurpose.getSelectedItem().toString();
@@ -459,7 +474,7 @@ public class MainActivity extends AppCompatActivity {
                 connection = DriverManager.getConnection("jdbc:jtds:sqlserver://45.114.141.43:1433/VisitorsList;user=" + userName + ";password=" + passWord2);
                 Log.i(TAG, " Connection Open Now");
                 String commands = "INSERT INTO dbo.VisitorsData2\n" +
-                        "VALUES ('" +  userName + "','" + inputLocation +  "','" + profileImageS + "','"  + mobileNumberS + "','" + firstNameS + "','" + noOfPeopleS + "','" + CoPersonNames + "','" + fromLocationS + "','" + whomToVisitS + "','" + inTimeS + "','" + dateOfVisit + "', '' , '', ' "   + visitPurposeS + "','" + remarksS + "')";
+                        "VALUES ('" +  userName + "','" + inputLocation +  "','" + profileImageS + "','"  + mobileNumberS + "','" + firstNameS + "','"  + vehicleNoS + "','" + noOfPeopleS + "','" + CoPersonNames + "','" + fromLocationS + "','" + whomToVisitS + "','" + inTimeS + "','" + dateOfVisit + "', '' , '', ' "   + visitPurposeS + "','" + remarksS + "')";
                 PreparedStatement preStmt = connection.prepareStatement(commands);
                 preStmt.executeUpdate();
                 Log.i(TAG, "Uploaded Successfully");
@@ -514,7 +529,7 @@ public class MainActivity extends AppCompatActivity {
                 Statement stmt = connection.createStatement();
 //            Log.i(TAG, "Application Status " + UtilClass.applicationActive);
 
-                resultSet = stmt.executeQuery("select top 1 FirstName, LastName, WhomToMeet, PurposeOfVisit,FromLocation, Remark, No_of_People from [dbo].[VisitorsData] where MobileNumber ='" + mobileNumberS + "' order by InDate desc, InTime desc");
+                resultSet = stmt.executeQuery("select top 1 Name, WhomToMeet, PurposeOfVisit,FromLocation from   [dbo].[VisitorsData2] where MobileNumber ='" + mobileNumberS + "' order by InDate desc, InTime desc");
 
             } catch (Exception e) {
                 Log.w("Error connection", "" + e.getMessage());
@@ -526,16 +541,13 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Void unused) {
             try {
                 while (resultSet.next()) {
-                    firstName.setText(resultSet.getString("FirstName"));
-                    lastName.setText(resultSet.getString("LastName"));
+                    firstName.setText(resultSet.getString("Name"));
                     whomToVisit.setText(resultSet.getString("WhomToMeet"));
                     if (resultSet.getString("PurposeOfVisit").equals("Official")) {
                         visitPurpose.setSelection(0);
                     } else {
                         visitPurpose.setSelection(1);
                     }
-                    noOfPeople.setText(resultSet.getString("No_of_People"));
-                    remarks.setText(resultSet.getString("Remark"));
                     fromLocation.setText(resultSet.getString("FromLocation"));
                 }
             } catch (SQLException e) {

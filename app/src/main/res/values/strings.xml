@@ -9,7 +9,7 @@
 
 
     <string-array name="locations">
-    <item>Jaipur</item>
+        <item>Jaipur</item>
 
         <item>Mumbai</item>
         <item>Chainpura</item>
