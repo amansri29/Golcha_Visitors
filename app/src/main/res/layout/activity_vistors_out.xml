@@ -7,7 +7,6 @@
     tools:context="com.golchaminerals.visitors.VistorsOut">
 
 
-
     <ListView
         android:layout_margin="10dp"
         android:id="@+id/visitors_list"
@@ -16,6 +15,7 @@
         android:divider="@android:color/transparent"
         android:dividerHeight="10dp"
         />
+
 
     <TextView
         android:textColor="@color/colorPrimary"

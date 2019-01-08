@@ -104,7 +104,9 @@ public class MainActivity extends AppCompatActivity {
         visitPurpose = (Spinner) findViewById(R.id.visit_purpose);
         ImageView image = (ImageView) findViewById(R.id.logout);
 
+
         noOfPeople.setEnabled(false);
+        inTime.setEnabled(false);
 
         gateOut.setOnClickListener(new View.OnClickListener() {
             @Override

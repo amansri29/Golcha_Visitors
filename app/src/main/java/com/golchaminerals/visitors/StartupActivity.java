@@ -13,8 +13,11 @@ public class StartupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean loggedIn = sharedPrefs.getBoolean("LoggedIn", false);
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        boolean verChange = sharedPrefs.getBoolean("V2", false);
+        editor.commit();
 
-        if(loggedIn)
+        if(loggedIn & verChange)
         {
             Intent i = new Intent(StartupActivity.this, MainActivity.class);
             startActivity(i);
@@ -22,6 +25,8 @@ public class StartupActivity extends AppCompatActivity {
         }
         else
         {
+            editor.putBoolean("V2", true);
+            editor.commit();
             Intent i = new Intent(StartupActivity.this, Login.class);
             startActivity(i);
             finish();
