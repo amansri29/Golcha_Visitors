@@ -11,7 +11,9 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.hardware.Camera;
+import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -191,8 +193,13 @@ public class MainActivity extends AppCompatActivity {
             sendBroadcast(mediaStoreUpdateIntent);
             Bitmap _bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
             photoBitMap = _bitmap;
-            takeImage.setImageBitmap(_bitmap);
 
+
+            Matrix matrix = new Matrix();
+            matrix.postRotate(270);
+
+            Bitmap rotatedBitmap = Bitmap.createBitmap(photoBitMap, 0, 0, photoBitMap.getWidth(), photoBitMap.getHeight(), matrix, true);
+            takeImage.setImageBitmap(rotatedBitmap);
 
             photoBitMap = Bitmap.createScaledBitmap(photoBitMap, 100, 100, false);
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();

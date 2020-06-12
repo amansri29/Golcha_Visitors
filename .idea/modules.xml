@@ -3,8 +3,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Golcha_Visitors.iml" filepath="$PROJECT_DIR$/Golcha_Visitors.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/Golcha_Visitors-app.iml" filepath="$PROJECT_DIR$/app/Golcha_Visitors-app.iml" group="Golcha_Visitors/app" />
+      <module fileurl="file://$PROJECT_DIR$/jtds-1.2.7/Golcha_Visitors-jtds-1.2.7.iml" filepath="$PROJECT_DIR$/jtds-1.2.7/Golcha_Visitors-jtds-1.2.7.iml" group="Golcha_Visitors/jtds-1.2.7" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/jtds-1.2.7/jtds-1.2.7.iml" filepath="$PROJECT_DIR$/jtds-1.2.7/jtds-1.2.7.iml" />
+      <module fileurl="file://$PROJECT_DIR$/visitors-Golcha_Visitors.iml" filepath="$PROJECT_DIR$/visitors-Golcha_Visitors.iml" group="Golcha_Visitors" />
     </modules>
   </component>
 </project>

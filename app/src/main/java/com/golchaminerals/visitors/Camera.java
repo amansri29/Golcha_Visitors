@@ -57,7 +57,7 @@ public class Camera extends AppCompatActivity {
 //    private Button takePictureButton;
     private TextureView textureView;
     ImageView capturedImage;
-    private boolean frontCam = false;
+    private boolean frontCam = true;
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
 
     private String cameraId;
@@ -267,8 +267,8 @@ public class Camera extends AppCompatActivity {
             captureBuilder.addTarget(reader.getSurface());
             captureBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
             // Orientation
-            int rotation = getWindowManager().getDefaultDisplay().getRotation();
-            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
+//            int rotation = getWindowManager().getDefaultDisplay().getRotation();
+//            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
             final File file = new File(Environment.getExternalStorageDirectory() + "/pic.jpg");
             ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
                 @Override
@@ -390,7 +390,8 @@ public class Camera extends AppCompatActivity {
                     CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId1);
                     int cOrientation = characteristics.get(CameraCharacteristics.LENS_FACING);
                     if (cOrientation == CameraCharacteristics.LENS_FACING_FRONT)
-                        cameraId = cameraId1;    // front camera
+//                        cameraId = cameraId1;    // front camera
+                         cameraId = manager.getCameraIdList()[1];
                 }
             }
             CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);

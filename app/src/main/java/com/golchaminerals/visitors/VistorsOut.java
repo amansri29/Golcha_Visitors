@@ -3,6 +3,7 @@ package com.golchaminerals.visitors;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -70,6 +71,8 @@ public class VistorsOut extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params) {
             try {
+                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                StrictMode.setThreadPolicy(policy);
                 SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 String userName = sharedPrefs.getString("UserName", "nu");
                 String passWord2 = sharedPrefs.getString("Password", "np");
@@ -81,6 +84,16 @@ public class VistorsOut extends AppCompatActivity {
 
                 resultSet = stmt.executeQuery("Select Id,Name, VehicleNo, InTime, InDate from [dbo].[VisitorsData2]  where EntryFromLocation = '" + inputLocation + "' and OutTime = '' ");
 
+
+                while (resultSet.next()) {
+                        Log.i(TAG, "onPostExecute: " + resultSet.getString("Name") + " " + resultSet.getString("VehicleNo")
+                                + " " + resultSet.getString("InTime") + " " + resultSet.getString("InDate"));
+                        name.add(resultSet.getString("Name"));
+                        vehicleNO.add(resultSet.getString("VehicleNo"));
+                        id.add(resultSet.getString("Id"));
+                        inTime.add(resultSet.getString("InTime") + " " + resultSet.getString("InDate"));
+                }
+
             } catch (Exception e) {
                 Log.w("Error connection", "" + e.getMessage());
             }
@@ -89,24 +102,16 @@ public class VistorsOut extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void unused) {
-            try {
-                while (resultSet.next()) {
-                    Log.i(TAG, "onPostExecute: " + resultSet.getString("Name") + " " + resultSet.getString("VehicleNo")
-                    + " " + resultSet.getString("InTime") + " " + resultSet.getString("InDate"));
-                    name.add(resultSet.getString("Name"));
-                    vehicleNO.add(resultSet.getString("VehicleNo"));
-                    id.add(resultSet.getString("Id"));
-                    inTime.add(resultSet.getString("InTime") + " " + resultSet.getString("InDate"));
-                }
+
 
                 // get data from the table by the ListAdapter
                 VisitorsListAdaptor customAdapter = new VisitorsListAdaptor(VistorsOut.this, R.layout.visitors_gate_out_list, name, vehicleNO, inTime, id);
                 visitorsListView.setAdapter(customAdapter);
 
 
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
 
         }
 
