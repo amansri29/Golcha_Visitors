@@ -3,6 +3,7 @@ package com.golchaminerals.visitors;
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
@@ -38,6 +39,7 @@ public class Login extends AppCompatActivity {
     String userName;
     String passWord2;
     Button login;
+    TextView scanresult;
     boolean connectionFailed = false;
     final String TAG = "LoginActivity";
     Spinner inputLocation;
@@ -47,6 +49,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
+        scanresult = (TextView)findViewById(R.id.scannerResult);
         inputLocation = (Spinner) findViewById(R.id.input_location);
         login = (Button) findViewById(R.id.btnLogin);
         emaiId = (EditText) findViewById(R.id.email);
@@ -68,10 +71,29 @@ public class Login extends AppCompatActivity {
                 loginProcess();
             }
         });
+        Button Qrscanner_btn = (Button)findViewById(R.id.Qrscanner);
+        Qrscanner_btn.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplicationContext(),QrScannerActivity.class);
+                        startActivityForResult(intent,101);
+                    }
+                }
+        );
 
 
 
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==101 &&resultCode==RESULT_OK){
+            String result = data.getStringExtra("result");
+            scanresult.setText(result);
+        }
     }
 
     @Override
