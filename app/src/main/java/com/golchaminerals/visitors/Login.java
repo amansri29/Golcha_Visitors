@@ -28,8 +28,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.golchaminerals.visitors.Retrofit.Retrourl;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static java.security.AccessController.getContext;
 
@@ -81,10 +87,28 @@ public class Login extends AppCompatActivity {
                     }
                 }
         );
+        vipul();
 
 
 
 
+    }
+
+    private void vipul() {
+        Call<String> call = Retrourl.retrofitApiInterface().callPoly();
+        call.enqueue(
+                new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        Log.i("vipul1",response.body().toString());
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Log.i("vipul", t.toString());
+                    }
+                }
+        );
     }
 
     @Override
