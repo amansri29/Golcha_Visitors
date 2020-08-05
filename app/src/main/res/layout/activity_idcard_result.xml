@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#B6BCFA"
+    android:background="@drawable/layoutborder"
     android:orientation="vertical"
     tools:context=".IdcardResultActivity">
 
@@ -21,21 +21,25 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
+        android:background="@drawable/textviewback"
+        android:padding="7dp"
         android:text="VIPUL SHARMA"
-        android:textStyle="bold"
         android:textColor="@color/cardview_dark_background"
-        android:textSize="18sp"/>
+        android:textSize="18sp"
+
+        android:textStyle="bold" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:text="30/08/2020"
-        android:textStyle="bold"
         android:textColor="@color/cardview_dark_background"
-        android:textSize="18sp"/>
-
-
+        android:textSize="18sp"
+        android:background="@drawable/textviewback"
+        android:padding="7dp"
+        android:textStyle="bold" />
 
 
 </LinearLayout>
