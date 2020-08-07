@@ -63,9 +63,9 @@ public class QrScannerActivity extends AppCompatActivity implements ZXingScanner
     @Override
     public void handleResult(Result rawResult) {
         String result =rawResult.getText();
-        Intent intent = new Intent();
-        intent.putExtra("result",result);
-        setResult(RESULT_OK,intent);
+        Intent intent = new Intent(this,IdcardResultActivity.class);
+        intent.putExtra("scanresult",result);
+        startActivity(intent);
         finish();
 
     }

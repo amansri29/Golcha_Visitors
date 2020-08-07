@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Retrourl {
     public static RetroInterface retrofitApiInterface(){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://1713101001.000webhostapp.com/userRes/")
+                .baseUrl("http://45.114.141.48:9090/api/")
                 .addConverterFactory(GsonConverterFactory.create()) //Here we are using the GsonConverterFactory to directly convert json data to object
                 .build();
 
