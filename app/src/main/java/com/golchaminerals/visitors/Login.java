@@ -55,7 +55,6 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
-        scanresult = (TextView)findViewById(R.id.scannerResult);
         inputLocation = (Spinner) findViewById(R.id.input_location);
         login = (Button) findViewById(R.id.btnLogin);
         emaiId = (EditText) findViewById(R.id.email);
@@ -77,48 +76,16 @@ public class Login extends AppCompatActivity {
                 loginProcess();
             }
         });
-        Button Qrscanner_btn = (Button)findViewById(R.id.Qrscanner);
-        Qrscanner_btn.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getApplicationContext(),QrScannerActivity.class);
-                        startActivityForResult(intent,101);
-                    }
-                }
-        );
-        vipul();
+
 
 
 
 
     }
 
-    private void vipul() {
-        Call<String> call = Retrourl.retrofitApiInterface().callPoly();
-        call.enqueue(
-                new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        Log.i("vipul1",response.body().toString());
-                    }
 
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-                        Log.i("vipul", t.toString());
-                    }
-                }
-        );
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==101 &&resultCode==RESULT_OK){
-            String result = data.getStringExtra("result");
-            scanresult.setText(result);
-        }
-    }
+
 
     @Override
     protected void onResume() {

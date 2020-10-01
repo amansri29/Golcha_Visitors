@@ -9,7 +9,7 @@
     tools:context=".IdcardResultActivity">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/Scanned_imageView"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_gravity="center"
@@ -17,30 +17,21 @@
 
 
     <TextView
+        android:id="@+id/scanned_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:background="@drawable/textviewback"
         android:padding="7dp"
-        android:text="VIPUL SHARMA"
+        android:text="..........."
         android:textColor="@color/cardview_dark_background"
         android:textSize="18sp"
 
         android:textStyle="bold" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:text="30/08/2020"
-        android:textColor="@color/cardview_dark_background"
-        android:textSize="18sp"
-        android:background="@drawable/textviewback"
-        android:padding="7dp"
-        android:textStyle="bold" />
-    <TextView
+        android:id="@+id/workingDepartment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -52,6 +43,7 @@
         android:padding="7dp"
         android:textStyle="bold" />
     <TextView
+        android:id="@+id/workLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -63,6 +55,7 @@
         android:padding="7dp"
         android:textStyle="bold" />
     <TextView
+        android:id="@+id/workAuthorization"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -74,6 +67,7 @@
         android:padding="7dp"
         android:textStyle="bold" />
     <TextView
+        android:id="@+id/labourtype"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -85,6 +79,7 @@
         android:padding="7dp"
         android:textStyle="bold" />
     <TextView
+        android:id="@+id/valid_till"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -113,6 +108,7 @@
             android:textSize="18sp"/>
 
         <Button
+            android:id="@+id/attendence_submit_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"

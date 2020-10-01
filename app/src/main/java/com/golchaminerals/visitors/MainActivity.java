@@ -117,6 +117,18 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        ImageButton Scanner_btn = (ImageButton) findViewById(R.id.scanner_btn);
+        Scanner_btn.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(MainActivity.this,QrScannerActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+        );
+
 
 
         addPerson.setOnClickListener(new View.OnClickListener() {
